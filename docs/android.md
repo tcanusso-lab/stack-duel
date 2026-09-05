@@ -1,6 +1,6 @@
 # Android (Capacitor + AdMob rewarded)
 
-Free app, zero IAP. Publisher / developer name: **Sabato Crew** (Play Console & AdMob). App title: **Stack Duel**. Vendetta uses an optional rewarded ad (Play again never requires it).
+Free app, zero IAP. App title: **Stack Duel**. Play/AdMob developer name: **TBD** (not finalized). Vendetta uses an optional rewarded ad (Play again never requires it).
 
 The `android/` project is in the repo (Capacitor 7 + `@capacitor-community/admob`). Google **test** AdMob IDs are wired in `js/ads-config.js` and `AndroidManifest.xml`.
 

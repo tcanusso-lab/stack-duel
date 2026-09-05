@@ -7,3 +7,4 @@
 {"ts":"2026-09-05T02:10:00Z","type":"coding_start","agent":"dev Stack Duel","issue":4,"branch":"feat/android-capacitor","note":"Source-only Capacitor+AdMob hook; android/ generated locally by Tomas"}
 {"ts":"2026-09-05T02:15:00Z","type":"pr_opened","agent":"dev Stack Duel","issue":4,"branch":"feat/android-capacitor","pr":"https://github.com/tcanusso-lab/stack-duel/pull/7","note":"Capacitor Android + AdMob test IDs; debug APK built"}
 {"ts":"2026-09-05T02:20:00Z","type":"docs","agent":"dev Stack Duel","issue":5,"branch":"feat/android-capacitor","note":"Sabato Crew brand + docs/online.md design-only"}
+{"ts":"2026-09-05T02:25:00Z","type":"docs","agent":"dev Stack Duel","issue":4,"branch":"feat/android-capacitor","note":"Revert Sabato Crew brand; publisher TBD"}
