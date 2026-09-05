@@ -2,3 +2,14 @@
 node_modules/
 .idea/
 *.log
+.local/
+android/local.properties
+android/.gradle/
+android/app/build/
+android/build/
+android/captures/
+android/*.iml
+android/app/*.iml
+*.keystore
+keystore.properties
+dist/

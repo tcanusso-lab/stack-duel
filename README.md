@@ -36,3 +36,7 @@ MVP tracked in #1.
 - **Vendetta** — optional "Guarda → Vendetta" on game over; web uses a **mock rewarded ad** (1.5s then "Ad watched"); rematch keeps names and shows a REVENGE banner
 - Ads are always optional — Play again works without watching
 
+## Android (Capacitor)
+
+See [docs/android.md](docs/android.md) for Capacitor + AdMob rewarded (test IDs), sync, debug APK, and release AAB steps.
+
