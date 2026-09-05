@@ -29,3 +29,10 @@ Vanilla HTML / CSS / JS. No build step.
 ## Issue
 
 MVP tracked in #1.
+
+## Retention (MVP+)
+
+- **Win streak** — saved in `localStorage`, shown on title + game over; resets for the loser
+- **Vendetta** — optional "Guarda → Vendetta" on game over; web uses a **mock rewarded ad** (1.5s then "Ad watched"); rematch keeps names and shows a REVENGE banner
+- Ads are always optional — Play again works without watching
+

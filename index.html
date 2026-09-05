@@ -35,6 +35,11 @@
           </div>
         </div>
 
+        <div id="title-streak" class="streak-badge" aria-live="polite">
+          <span class="streak-fire" aria-hidden="true">🔥</span>
+          <span id="title-streak-text">Win streak: 0</span>
+        </div>
+
         <div class="player-fields">
           <label class="player-field player-1">
             <span class="avatar red" aria-hidden="true"></span>
@@ -66,6 +71,8 @@
         <div class="clouds clouds-soft" aria-hidden="true"></div>
         <div class="hills" aria-hidden="true"></div>
       </div>
+
+      <div id="revenge-banner" class="revenge-banner hidden" aria-live="polite">⚡ REVENGE</div>
 
       <header class="hud">
         <div id="turn-banner" class="turn-banner">
@@ -109,10 +116,21 @@
           <span id="fall-text"><strong>Alex</strong> made the tower fall ☹️ 💔</span>
         </div>
 
+        <div id="over-streak" class="streak-badge over-streak" aria-live="polite">
+          <span class="streak-fire" aria-hidden="true">🔥</span>
+          <span id="over-streak-text">Win streak: 0</span>
+        </div>
+
         <div class="rubble" aria-hidden="true">
           <div class="rubble-pile"></div>
           <div class="dust"></div>
         </div>
+
+        <button id="btn-vendetta" class="btn btn-vendetta" type="button">
+          <span class="ad-icon" aria-hidden="true">▶</span>
+          Guarda → Vendetta
+        </button>
+        <p class="vendetta-hint">Opzionale · rewarded ad (mock sul web)</p>
 
         <div class="over-actions">
           <button id="btn-again" class="btn btn-again" type="button">
@@ -124,6 +142,16 @@
         </div>
       </div>
     </section>
+
+    <div id="ad-modal" class="ad-modal hidden" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title">
+      <div class="ad-card">
+        <div class="ad-spinner" aria-hidden="true"></div>
+        <h2 id="ad-modal-title">Watching ad…</h2>
+        <p id="ad-modal-sub">Mock rewarded ad</p>
+        <button id="btn-ad-done" class="btn btn-ad-done hidden" type="button">Ad watched ✓</button>
+        <button id="btn-ad-skip" class="btn-ad-skip" type="button">Annulla</button>
+      </div>
+    </div>
   </div>
 
   <script src="js/game.js"></script>
