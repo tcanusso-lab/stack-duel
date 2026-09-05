@@ -594,11 +594,11 @@
   // Rewarded ad via StackDuelAds (mock on web, AdMob on native)
   async function startVendetta() {
     if (state.phase !== "over") return;
+    const ads = window.StackDuelAds;
+    if (!ads || !ads.showRewarded) return;
     try {
-      if (window.StackDuelAds && window.StackDuelAds.prepareRewarded) {
-        window.StackDuelAds.prepareRewarded();
-      }
-      await window.StackDuelAds.showRewarded();
+      if (ads.prepareRewarded) ads.prepareRewarded();
+      await ads.showRewarded();
     } catch (_) {
       return; // cancelled — game stays playable without ad
     }
