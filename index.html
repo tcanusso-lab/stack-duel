@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#f8c8b8" />
+  <title>Stack Duel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <section id="screen-title" class="screen active" aria-label="Title">
+      <div class="sky sky-title">
+        <div class="stars" aria-hidden="true"></div>
+        <div class="clouds" aria-hidden="true"></div>
+      </div>
+      <div class="title-panel">
+        <div class="logo" aria-label="Stack Duel">
+          <div class="logo-text">
+            <span class="logo-line">
+              <i class="c0">S</i><i class="c1">T</i><i class="c2">A</i><i class="c3">C</i><i class="c4">K</i>
+            </span>
+            <span class="logo-line">
+              <i class="c5">D</i><i class="c0">U</i><i class="c1">E</i><i class="c2">L</i>
+            </span>
+          </div>
+          <div class="logo-cubes" aria-hidden="true">
+            <span class="cube c-red"></span>
+            <span class="cube c-orange"></span>
+            <span class="cube c-yellow"></span>
+            <span class="cube c-green"></span>
+          </div>
+        </div>
+
+        <div class="player-fields">
+          <label class="player-field player-1">
+            <span class="avatar red" aria-hidden="true"></span>
+            <span class="field-body">
+              <span class="field-label">PLAYER 1</span>
+              <input id="name1" type="text" maxlength="12" value="Alex" autocomplete="off" spellcheck="false" />
+            </span>
+            <button type="button" class="edit-btn" data-focus="name1" aria-label="Edit player 1"></button>
+          </label>
+
+          <label class="player-field player-2">
+            <span class="avatar teal" aria-hidden="true"></span>
+            <span class="field-body">
+              <span class="field-label">PLAYER 2</span>
+              <input id="name2" type="text" maxlength="12" value="Sam" autocomplete="off" spellcheck="false" />
+            </span>
+            <button type="button" class="edit-btn" data-focus="name2" aria-label="Edit player 2"></button>
+          </label>
+        </div>
+
+        <button id="btn-play" class="btn btn-play" type="button">
+          <span class="play-icon" aria-hidden="true"></span> PLAY
+        </button>
+      </div>
+    </section>
+
+    <section id="screen-game" class="screen" aria-label="Gameplay">
+      <div class="sky sky-game">
+        <div class="clouds clouds-soft" aria-hidden="true"></div>
+        <div class="hills" aria-hidden="true"></div>
+      </div>
+
+      <header class="hud">
+        <div id="turn-banner" class="turn-banner">
+          <div class="turn-avatar" aria-hidden="true"></div>
+          <span id="turn-text">Alex's turn</span>
+        </div>
+        <div class="height-badge" aria-live="polite">
+          <span class="trophy" aria-hidden="true">🏆</span>
+          <div>
+            <div class="height-label">Height</div>
+            <div class="height-value"><span id="height-num">0</span> <span class="up" aria-hidden="true">↑</span></div>
+          </div>
+        </div>
+      </header>
+
+      <canvas id="game-canvas" width="390" height="700" role="img" aria-label="Tower stacking game"></canvas>
+
+      <button id="btn-drop" class="btn btn-drop" type="button">
+        <span class="drop-icon" aria-hidden="true"></span>
+        <span>Tap to drop.</span>
+        <span class="star-face" aria-hidden="true">★</span>
+      </button>
+    </section>
+
+    <section id="screen-over" class="screen" aria-label="Game over">
+      <div class="sky sky-over">
+        <div class="confetti" id="confetti" aria-hidden="true"></div>
+        <div class="clouds" aria-hidden="true"></div>
+      </div>
+      <div class="over-panel">
+        <div class="over-brand">
+          <span class="mini-cube teal" aria-hidden="true"></span>
+          <span class="brand-text"><b>STACK</b> <em>DUEL</em></span>
+          <span class="mini-cube purple" aria-hidden="true"></span>
+        </div>
+
+        <h1 id="winner-text" class="winner-text"><span class="who">Sam</span> <span class="wins">wins!</span></h1>
+
+        <div class="fall-ribbon">
+          <span class="ribbon-block" aria-hidden="true"></span>
+          <span id="fall-text"><strong>Alex</strong> made the tower fall ☹️ 💔</span>
+        </div>
+
+        <div class="rubble" aria-hidden="true">
+          <div class="rubble-pile"></div>
+          <div class="dust"></div>
+        </div>
+
+        <div class="over-actions">
+          <button id="btn-again" class="btn btn-again" type="button">
+            <span class="again-icon" aria-hidden="true"></span> Play again
+          </button>
+          <button id="btn-names" class="btn btn-names" type="button">
+            <span class="names-icon" aria-hidden="true"></span> Change names
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/game.js"></script>
+</body>
+</html>
