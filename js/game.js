@@ -27,6 +27,8 @@
   const name1 = $("name1");
   const name2 = $("name2");
 
+  const STREAK_KEY = "stackDuel.winStreaks";
+
   const state = {
     phase: "title", // title | moving | dropping | settling | collapsing | over
     players: ["Alex", "Sam"],
@@ -41,7 +43,65 @@
     collapseTimer: 0,
     raf: 0,
     lastTs: 0,
+    revenge: false,
+    adTimer: null,
   };
+
+  function loadStreaks() {
+    try {
+      const raw = localStorage.getItem(STREAK_KEY);
+      const data = raw ? JSON.parse(raw) : {};
+      return data && typeof data === "object" ? data : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveStreaks(data) {
+    try {
+      localStorage.setItem(STREAK_KEY, JSON.stringify(data));
+    } catch (_) { /* ignore quota */ }
+  }
+
+  function streakFor(name) {
+    const n = String(name || "").trim();
+    if (!n) return 0;
+    const data = loadStreaks();
+    return Math.max(0, Number(data[n]) || 0);
+  }
+
+  function applyMatchResult(winnerName, loserName) {
+    const data = loadStreaks();
+    const w = String(winnerName).trim();
+    const l = String(loserName).trim();
+    data[w] = (Math.max(0, Number(data[w]) || 0)) + 1;
+    if (l) data[l] = 0;
+    saveStreaks(data);
+    return data[w];
+  }
+
+  function formatStreakLine(players) {
+    const [a, b] = players || names();
+    const sa = streakFor(a);
+    const sb = streakFor(b);
+    if (sa === 0 && sb === 0) return "Win streak: 0";
+    return `🔥 ${a} ${sa} · ${b} ${sb}`;
+  }
+
+  function refreshStreakUI(players) {
+    const clean = formatStreakLine(players);
+    const text = clean.startsWith("🔥") ? clean.slice(2).trim() : clean;
+    const titleEl = $("title-streak-text");
+    const overEl = $("over-streak-text");
+    if (titleEl) titleEl.textContent = text;
+    if (overEl) overEl.textContent = text;
+  }
+
+  function setRevengeBanner(on) {
+    const el = $("revenge-banner");
+    if (!el) return;
+    el.classList.toggle("hidden", !on);
+  }
 
   function show(name) {
     Object.values(screens).forEach((el) => el.classList.remove("active"));
@@ -101,13 +161,26 @@
     updateHud();
   }
 
-  function startGame() {
+  function startGame(opts) {
+    const options = opts || {};
     cancelAnimationFrame(state.raf);
     state.lastTs = 0;
+    if (state.adTimer) {
+      clearTimeout(state.adTimer);
+      state.adTimer = null;
+    }
+    hideAdModal();
     state.players = names();
     name1.value = state.players[0];
     name2.value = state.players[1];
-    state.turn = 0;
+    state.revenge = !!options.revenge;
+    setRevengeBanner(state.revenge);
+    // Vendetta: loser of last match starts (cute rage rematch)
+    if (state.revenge && typeof options.startTurn === "number") {
+      state.turn = options.startTurn;
+    } else {
+      state.turn = 0;
+    }
     state.stack = [{
       x: ((canvas._cssW || 390) - BASE_W) / 2,
       y: 0,
@@ -245,11 +318,16 @@
     const winner = 1 - loser;
     const winnerName = state.players[winner];
     const loserName = state.players[loser];
+    state._lastWinner = winner;
+    state._lastLoser = loser;
+    applyMatchResult(winnerName, loserName);
+    refreshStreakUI(state.players);
     $("winner-text").innerHTML =
       `<span class="who">${escapeHtml(winnerName)}</span> <span class="wins">wins!</span>`;
     $("fall-text").innerHTML =
       `<strong>${escapeHtml(loserName)}</strong> made the tower fall ☹️ 💔`;
     buildConfetti();
+    setRevengeBanner(false);
     show("over");
     state.phase = "over";
     cancelAnimationFrame(state.raf);
@@ -501,12 +579,83 @@
     });
   }
 
+  // ---- Mock rewarded ad (web) ----
+  function hideAdModal() {
+    const modal = $("ad-modal");
+    if (!modal) return;
+    modal.classList.add("hidden");
+    modal.classList.remove("ready");
+    $("btn-ad-done").classList.add("hidden");
+    $("ad-modal-title").textContent = "Watching ad…";
+    $("ad-modal-sub").textContent = "Mock rewarded ad";
+  }
+
+  function showMockAd() {
+    return new Promise((resolve, reject) => {
+      const modal = $("ad-modal");
+      const done = $("btn-ad-done");
+      const skip = $("btn-ad-skip");
+      hideAdModal();
+      modal.classList.remove("hidden");
+      modal.classList.remove("ready");
+      done.classList.add("hidden");
+
+      const cleanup = () => {
+        if (state.adTimer) {
+          clearTimeout(state.adTimer);
+          state.adTimer = null;
+        }
+        done.onclick = null;
+        skip.onclick = null;
+      };
+
+      skip.onclick = () => {
+        cleanup();
+        hideAdModal();
+        reject(new Error("cancelled"));
+      };
+
+      state.adTimer = setTimeout(() => {
+        state.adTimer = null;
+        modal.classList.add("ready");
+        $("ad-modal-title").textContent = "Ad watched";
+        $("ad-modal-sub").textContent = "Reward unlocked · Vendetta!";
+        done.classList.remove("hidden");
+        done.onclick = () => {
+          cleanup();
+          hideAdModal();
+          resolve();
+        };
+      }, 1500);
+    });
+  }
+
+  async function startVendetta() {
+    if (state.phase !== "over") return;
+    try {
+      await showMockAd();
+    } catch (_) {
+      return; // cancelled — game stays fully playable without ad
+    }
+    const loserTurn = typeof state._lastLoser === "number" ? state._lastLoser : 0;
+    startGame({ revenge: true, startTurn: loserTurn });
+  }
+
   // Events
-  $("btn-play").addEventListener("click", startGame);
-  $("btn-again").addEventListener("click", startGame);
+  $("btn-play").addEventListener("click", () => startGame({ revenge: false }));
+  $("btn-again").addEventListener("click", () => startGame({ revenge: false }));
+  $("btn-vendetta").addEventListener("click", () => { startVendetta(); });
   $("btn-names").addEventListener("click", () => {
     cancelAnimationFrame(state.raf);
+    if (state.adTimer) {
+      clearTimeout(state.adTimer);
+      state.adTimer = null;
+    }
+    hideAdModal();
+    state.revenge = false;
+    setRevengeBanner(false);
     state.phase = "title";
+    refreshStreakUI(names());
     show("title");
   });
 
@@ -552,5 +701,8 @@
   });
 
   // Initial
+  refreshStreakUI(names());
+  setRevengeBanner(false);
+  hideAdModal();
   show("title");
 })();
