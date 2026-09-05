@@ -2,6 +2,8 @@
 
 Hot-seat tower stacking duel — web MVP (casual bright).
 
+**Sabato Crew** — studio / Play & AdMob developer name. Game title: **Stack Duel**.
+
 Two players, one device. Take turns dropping blocks. Whoever topples the tower loses.
 
 ## Play
@@ -40,3 +42,6 @@ MVP tracked in #1.
 
 See [docs/android.md](docs/android.md) for Capacitor + AdMob rewarded (test IDs), sync, debug APK, and release AAB steps.
 
+## Online (design only)
+
+See [docs/online.md](docs/online.md) — room code spike notes. No backend yet.
